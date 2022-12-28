@@ -3,14 +3,13 @@ import { FC } from "react";
 import { Button, Table } from "react-bootstrap";
 
 const App: FC = () => {
-  // const { coelData } = useScrap();
-
-  // console.log({ coelData });
+  const { scrap } = useScrap();
 
   return (
     <div className="container h-100 py-4">
       <section className="mb-4 text-center">
-        <Button variant="dark" className="shadow">Coel</Button>
+        <Button variant="warning" className="shadow" onClick={scrap}>Coel</Button>
+        <Button variant="warning" className="shadow ml-3">Epalma</Button>
       </section>
       <Table striped bordered hover className="shadow">
         <thead>
