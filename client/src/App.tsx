@@ -1,18 +1,18 @@
 import { FC } from "react";
-import { useScrap } from "./useScrap";
+// import { useScrap } from "./useScrap";
 import { Button, Table } from "react-bootstrap";
 
 const App: FC = () => {
-  const { coelData } = useScrap();
+  // const { coelData } = useScrap();
 
-  console.log({ coelData });
+  // console.log({ coelData });
 
   return (
-    <div className="container py-4 bg-light">
+    <div className="container h-100 py-4">
       <section className="mb-4 text-center">
-        <Button variant="dark">Coel</Button>
+        <Button variant="dark" className="shadow">Coel</Button>
       </section>
-      <Table striped bordered hover>
+      <Table striped bordered hover className="shadow">
         <thead>
           <tr>
             <th>#</th>
