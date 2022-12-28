@@ -1,7 +1,7 @@
 {
-  "name": "aldo_solano_portfolio",
+  "name": "materiales_backend",
   "version": "1.0.0",
-  "description": "Aldo Solano Portfolio",
+  "description": "materiales_backend",
   "main": "server.ts",
   "engines": {
     "node": "16.15.0"
