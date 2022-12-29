@@ -16,8 +16,9 @@ const scrapCoel = async (req: requestType, res: responseType) => {
   const accumulator: any = [];
 
   for await (const promise of promises) {
-    if (!promise?.data) continue;
     const $ = cheerio.load(promise.data);
+    const isEmpty = !!$("div.no-result").text().trim();
+    if (isEmpty) continue;
     const results: any = [];
     $("div.item-box").each((i: any, element: any) => {
       const name = $(element)
