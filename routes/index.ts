@@ -3,32 +3,42 @@ import axios from "axios";
 import { Router } from "express";
 import { Request, Response } from "express-serve-static-core";
 import { ParsedQs } from "qs";
-import coelUrls from "./constants";
+import { getOtherPages } from "./helpers";
 
 const router: Router = Router();
 
-type requestType = Request<any, any, any, ParsedQs, Record<string, any>>;
-type responseType = Response<any, Record<string, any>, number>;
+type RequestType = Request<any, any, any, ParsedQs, Record<string, any>>;
+type ResponseType = Response<any, Record<string, any>, number>;
+type CoelType = {
+  link: string;
+  name: string;
+  price: string;
+};
 
-const scrapCoel = async (req: requestType, res: responseType) => {
-  const promises = coelUrls.map((url) => axios.get(url));
+const scrapCoel = async (req: RequestType, res: ResponseType) => {
+  const urls = getOtherPages(req.body.url);
+  const promises = urls.map((url) => axios.get(url));
 
-  const accumulator: any = [];
-
+  const accumulator: CoelType[] = [];
   for await (const promise of promises) {
     const $ = cheerio.load(promise.data);
     const isEmpty = !!$("div.no-result").text().trim();
     if (isEmpty) continue;
-    const results: any = [];
+    const results: CoelType[] = [];
     $("div.item-box").each((i: any, element: any) => {
-      const name = $(element)
+      const name: string = $(element)
         .find(".product-title")
         .children()
         .first()
         .text()
         .trim();
-      const price = $(element).find(".price").text().trim();
-      results.push({ name, price });
+      const link: string = $(element)
+        .find(".product-title")
+        .children()
+        .first()
+        .attr("href");
+      const price: string = $(element).find(".price").text().trim();
+      results.push({ link: `https://coel.com.mx${link}`, name, price });
     });
     accumulator.push(...results);
   }
@@ -36,11 +46,6 @@ const scrapCoel = async (req: requestType, res: responseType) => {
   res.send(accumulator);
 };
 
-const scrapEpalma = async (req: requestType, res: responseType) => {
-  res.send([22222]);
-};
-
-router.use("/api/coel", scrapCoel);
-router.use("/api/epalma", scrapEpalma);
+router.post("/api/coel", scrapCoel);
 
 export default router;

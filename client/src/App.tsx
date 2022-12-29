@@ -1,45 +1,24 @@
 import { FC } from "react";
 import { useScrap } from "./useScrap";
 import { Button, Spinner, Table } from "react-bootstrap";
+import { COEL_BUTTONS, EPALMA_BUTTONS } from "./constants";
 
 const App: FC = () => {
-  const { data, scrap, isLoading } = useScrap();
-
-  const coelButtons = [
-    {
-      label: "iluminación",
-      url: "https://coel.com.mx/sp/iluminacion?pagenumber=",
-    },
-    {
-      label: "conductores eléctricos",
-      url: "https://coel.com.mx/sp/cables?pagenumber=",
-    },
-    {
-      label: "tubería y canalización",
-      url: "https://coel.com.mx/sp/tuberia?pagenumber=",
-    },
-    {
-      label: "material eléctrico",
-      url: "https://coel.com.mx/sp/material-electrico?pagenumber=",
-    },
-    {
-      label: "control y distribución",
-      url: "https://coel.com.mx/sp/control-y-distribucion?pagenumber=",
-    },
-  ];
+  const { data, isLoading, scrap, title } = useScrap();
 
   return (
     <div className="container h-100 py-4">
-      <h1 className="mb-4">Web Scrap</h1>
+      <h1>Web Scrap</h1>
+      <hr />
       <section>
-        <h4>Coel</h4>
-        <div>
-          {coelButtons.map(({ label, url }) => (
+        <h4>COEL</h4>
+        <div className="d-flex justify-content-between">
+          {COEL_BUTTONS.map(({ label, url }, idx) => (
             <Button
-              className="shadow mr-2"
+              className="shadow-sm"
               disabled={isLoading}
-              key={label}
-              onClick={() => scrap(label)}
+              key={idx}
+              onClick={() => scrap("coel", label, url)}
               variant="warning"
             >
               {label}
@@ -49,48 +28,50 @@ const App: FC = () => {
       </section>
       <br />
       <section>
-        <h4>Epalma</h4>
-        <div>
-          {coelButtons.map(({ label, url }) => (
-            <Button
-              className="shadow mr-2"
-              disabled={isLoading}
-              key={label}
-              onClick={() => scrap(label)}
-              variant="warning"
-            >
-              {label}
-            </Button>
-          ))}
-        </div>
-      </section>
-      <section>
-        {isLoading && <Spinner animation="border" />}
+        {isLoading && (
+          <div className="text-center">
+            <Spinner animation="border" />
+          </div>
+        )}
         {!isLoading && data.length ? (
-          <Table striped bordered hover className="shadow">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map(
-                (
-                  { name, price }: { name: string; price: string },
-                  idx: string
-                ) => {
-                  if (!name && !price) return null;
-                  return (
-                    <tr key={idx}>
-                      <td>{name}</td>
-                      <td>{price}</td>
-                    </tr>
-                  );
-                }
-              )}
-            </tbody>
-          </Table>
+          <>
+            <hr />
+            <h4 className="mb-4">{title.toUpperCase()}</h4>
+            <Table striped bordered hover className="shadow">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map(
+                  (
+                    {
+                      link,
+                      name,
+                      price,
+                    }: { link: string; name: string; price: string },
+                    idx: string
+                  ) => {
+                    if (!name && !price) return null;
+                    return (
+                      <tr key={idx}>
+                        <td>{name}</td>
+                        <td>{price}</td>
+                        <td>
+                          <a target="_blank" rel="noreferrer" href={link}>
+                            <i className="fa-solid fa-link text-warning" />
+                          </a>
+                        </td>
+                      </tr>
+                    );
+                  }
+                )}
+              </tbody>
+            </Table>
+          </>
         ) : null}
       </section>
       <br />
