@@ -10,7 +10,8 @@
   "typescript": "^4.1.2",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-    "start:prod": "ts-node server.ts",
+    "start:prod": "ts-node --transpile-only server",
+    "typings": "src/start",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "client": "cd client && npm run start",
     "install": "cd client && npm install",
