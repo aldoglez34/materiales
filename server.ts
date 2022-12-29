@@ -38,3 +38,10 @@ app.get("*", (req: Request, res: Response) =>
 app.listen(PORT, () =>
   console.log(`\n\n🌎 ==> API server listening on port ${PORT}!`)
 );
+
+app.use(function (req, res, next) {
+  req.setTimeout(500000, function () {
+    // call back function is called when request timed out.
+  });
+  next();
+});
