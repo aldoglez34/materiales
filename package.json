@@ -10,6 +10,7 @@
   "typescript": "^4.1.2",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "heroku-start": "ts-node \"./src/server.ts\"",
     "start:prod": "ts-node --transpile-only server",
     "typings": "src/start",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
@@ -29,9 +30,7 @@
     "@types/nodemailer": "^6.4.5",
     "@types/response-time": "^2.3.5",
     "concurrently": "^4.1.0",
-    "nodemon": "^1.18.7",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.7.4"
+    "nodemon": "^1.18.7"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -48,6 +47,7 @@
     "nodemailer": "^6.4.11",
     "path": "^0.12.7",
     "response-time": "^2.3.2",
-    "ts-node": "^10.2.1"
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
   }
 }
