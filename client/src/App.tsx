@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useScrap } from "./useScrap";
 import { Button, Spinner, Table } from "react-bootstrap";
-import { COEL_BUTTONS, EPALMA_BUTTONS } from "./constants";
+import { COEL_BUTTONS } from "./constants";
 
 const App: FC = () => {
   const { data, isLoading, scrap, title } = useScrap();
