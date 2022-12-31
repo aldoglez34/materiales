@@ -5,7 +5,6 @@ import routes from "./routes";
 import bodyParser from "body-parser";
 import responseTime from "response-time";
 import errorhandler from "errorhandler";
-import isEqual from "lodash/isEqual";
 import { config as dotenvConfig } from "dotenv";
 
 const app: Express = express();
@@ -18,12 +17,9 @@ app.use(morgan("dev"));
 app.use(responseTime());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-if (isEqual(process.env.NODE_ENV, "development")) {
-  app.use(errorhandler());
-}
-if (isEqual(process.env.NODE_ENV, "production")) {
+if (process.env.NODE_ENV === "development") app.use(errorhandler());
+if (process.env.NODE_ENV === "production")
   app.use(express.static("client/build"));
-}
 
 // API routes
 app.use(routes);
