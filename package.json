@@ -12,7 +12,7 @@
     "heroku-postbuild": "npm run build",
     "install": "cd client && npm install",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
-    "start:prod": "ts-node server",
+    "start:prod": "ts-node server.ts",
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "postinstall": "tsc"
   },
