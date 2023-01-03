@@ -10,12 +10,10 @@
     "build": "tsc",
     "client": "cd client && npm run start",
     "heroku-postbuild": "npm run build",
-    "heroku-start": "node dist/server.js",
+    "start": "node dist/server.js",
     "install": "cd client && npm install",
-    "postinstall": "tsc",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
-    "start:prod": "ts-node server.ts",
-    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev"
+    "start:prod": "ts-node server.ts"
   },
   "author": "Aldo Solano González",
   "license": "ISC",
