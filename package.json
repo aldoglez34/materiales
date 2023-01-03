@@ -2,15 +2,15 @@
   "name": "materiales_backend",
   "version": "1.0.0",
   "description": "materiales_backend",
-  "main": "server.ts",
+  "main": "server.js",
   "engines": {
     "node": "16.15.0"
   },
   "scripts": {
-    "build": "cd client && npm run build",
+    "build": "tsc",
     "client": "cd client && npm run start",
     "heroku-postbuild": "npm run build",
-    "heroku-start": "ts-node server.ts",
+    "heroku-start": "node dist/server.js",
     "install": "cd client && npm install",
     "postinstall": "tsc",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
