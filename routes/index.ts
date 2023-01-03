@@ -18,7 +18,6 @@ type CoelType = {
 const scrapCoel = async (req: RequestType, res: ResponseType) => {
   const urls = getOtherPages(req.body.url);
   const promises = urls.map((url) => axios.get(url));
-
   const accumulator: CoelType[] = [];
   for await (const promise of promises) {
     const $ = cheerio.load(promise.data);
@@ -42,7 +41,6 @@ const scrapCoel = async (req: RequestType, res: ResponseType) => {
     });
     accumulator.push(...results);
   }
-
   res.send(accumulator);
 };
 

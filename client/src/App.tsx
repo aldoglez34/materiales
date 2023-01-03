@@ -1,25 +1,34 @@
-import { FC } from "react";
-import { useScrap } from "./useScrap";
+import { FC, useState } from "react";
+import { useScrap } from "./hooks/useScrap";
 import { Button, Spinner, Table } from "react-bootstrap";
-import { COEL_BUTTONS } from "./constants";
+import { SCRAP_BUTTONS } from "./constants";
+import { SearchBar } from "./components/SearchBar";
+import { Export } from "./components/Export";
+import { useSearch } from "./hooks/useSearch";
+import { DataType } from "./types";
 
 const App: FC = () => {
-  const { data, isLoading, scrap, title } = useScrap();
+  const [title, setTitle] = useState<string>("Web Scrap");
+
+  const { data, isLoading, scrap } = useScrap();
+  const { filteredData, handleSearch } = useSearch({ data });
 
   return (
     <div className="container h-100 py-4">
-      <h1>Web Scrap</h1>
+      <h1>{title.toUpperCase()}</h1>
       <hr />
       <section>
         <h4>COEL</h4>
         <div className="d-flex justify-content-between">
-          {COEL_BUTTONS.map(({ label, url }, idx) => (
+          {SCRAP_BUTTONS.map(({ commerce, label, url }, idx) => (
             <Button
               className="shadow-sm"
               disabled={isLoading}
               key={idx}
-              onClick={() => scrap("coel", label, url)}
-              variant="warning"
+              onClick={() => {
+                scrap(commerce, url);
+                setTitle(`${commerce} | ${label}`);
+              }}
             >
               {label}
             </Button>
@@ -30,13 +39,17 @@ const App: FC = () => {
       <section>
         {isLoading && (
           <div className="text-center">
-            <Spinner animation="border" />
+            <Spinner animation="border" variant="primary" />
           </div>
         )}
         {!isLoading && data.length ? (
           <>
-            <hr />
-            <h4 className="mb-4">{title.toUpperCase()}</h4>
+            <SearchBar handleSearch={handleSearch} />
+            <Export
+              data={filteredData}
+              fileName={title}
+              label={`Exportar ${filteredData.length} resultados a .CSV`}
+            />
             <Table striped bordered hover className="shadow">
               <thead>
                 <tr>
@@ -46,15 +59,8 @@ const App: FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.map(
-                  (
-                    {
-                      link,
-                      name,
-                      price,
-                    }: { link: string; name: string; price: string },
-                    idx: string
-                  ) => {
+                {filteredData.map(
+                  ({ link, name, price }: DataType, idx: number) => {
                     if (!name && !price) return null;
                     return (
                       <tr key={idx}>
@@ -62,7 +68,7 @@ const App: FC = () => {
                         <td>{price}</td>
                         <td>
                           <a target="_blank" rel="noreferrer" href={link}>
-                            <i className="fa-solid fa-link text-warning" />
+                            <i className="fa-solid fa-link text-primary" />
                           </a>
                         </td>
                       </tr>
