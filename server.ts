@@ -3,7 +3,6 @@ import path from "path";
 import morgan from "morgan";
 import routes from "./routes";
 import bodyParser from "body-parser";
-import responseTime from "response-time";
 import errorhandler from "errorhandler";
 import { config as dotenvConfig } from "dotenv";
 
@@ -14,7 +13,6 @@ dotenvConfig();
 
 // middleware
 app.use(morgan("dev"));
-app.use(responseTime());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 if (process.env.NODE_ENV === "development") app.use(errorhandler());
